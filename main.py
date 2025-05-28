@@ -48,7 +48,6 @@ def poner_ficha(tablero, fila, columna, turno):
 
 def es_movimiento_valido(tablero, fila, columna, turno):
     fichas_a_voltear = []
-    camino = []
     
     if tablero[(fila, columna)] != 0:
         return False, []
@@ -59,17 +58,21 @@ def es_movimiento_valido(tablero, fila, columna, turno):
                    (1, -1),  (1, 0),  (1, 1)]
 
     for dx, dy in direcciones:
-        x, y = fila + dx, columna + dy
+        temp = []
+        x= fila + dx
+        y = columna + dy
         hay_enemigo = False
 
         while 0 <= x < 8 and 0 <= y < 8 and tablero[(x, y)] == enemigo:
-            camino = [(x,y)]
+            temp.append((x,y))
             x += dx
             y += dy
             hay_enemigo = True
         if hay_enemigo and 0 <= x < 8 and 0 <= y < 8 and tablero[(x, y)] == turno:
-            fichas_a_voltear.extend(camino)
-            return True, fichas_a_voltear
+            fichas_a_voltear.extend(temp)
+        
+    if len(fichas_a_voltear) > 0:
+        return True, fichas_a_voltear
 
     return False, []
 
@@ -152,5 +155,7 @@ while True:
 
     except ValueError:
         print("Debes ingresar 2 números separados por coma")
+    except KeyError:
+        print("Debes ingresar 2 números válidos enter 0 y 7")
 
     
