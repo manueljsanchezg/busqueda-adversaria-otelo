@@ -26,7 +26,7 @@ while True:
 
     if turno == 2:
         
-        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=1000)
+        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=3000)
         print(movimiento)
 
         otelo.poner_ficha(tablero, movimiento[0], movimiento[1], turno)
@@ -64,8 +64,3 @@ while True:
             print("Debes ingresar 2 números válidos enter 0 y 7")
         except IndexError:
             print("Debes ingresar 2 números válidos enter 0 y 7")
-
-
-    
-
-    
