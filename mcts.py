@@ -50,7 +50,7 @@ def expande(nodo):
 
 
 def mejor_sucesor_uct(nodo):
-    c_p = 0.7
+    c_p = 1.4142
     n_s0 = nodo.n_visitas
     uct_hijos = []
     posicion = 0
@@ -97,7 +97,11 @@ def simula(tablero, turno, ia_vs_ia):
             nuevo_turno = 3 - nuevo_turno
             continue
 
-        movimiento = random.choice(list(otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)))
+        #movimiento = random.choice(list(otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)))
+
+        movimientos = list(otelo.posibles_movimientos(nuevo_tablero, nuevo_turno))
+        random.shuffle(movimientos)
+        movimiento = movimientos[0]
 
         #movimientos = otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)
 
