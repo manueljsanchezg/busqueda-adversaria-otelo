@@ -2,22 +2,19 @@ from tqdm import tqdm # Librería para barras de progreso
 import otelo
 import mcts
 
-partidas = 20
+partidas = 10
 ganadas_negras = 0
 ganadas_blancas = 0
 
 for i in tqdm(range(partidas)):
 
     # Alternancia de primer jugador
-    primer_turno = 1 if i % 2 == 0 else 2
-    turno = primer_turno
 
+    turno = 1
 
     tablero = otelo.crear_tablero()
 
     #otelo.mostrar_tablero(tablero)
-
-    print(f"Partida {i}, empieza {turno}")
 
     while True:
 
@@ -40,7 +37,7 @@ for i in tqdm(range(partidas)):
 
         
         
-        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=3000, ia_vs_ia=True)
+        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=500, ia_vs_ia=True)
         #print(movimiento)
 
         otelo.poner_ficha(tablero, movimiento[0], movimiento[1], turno)

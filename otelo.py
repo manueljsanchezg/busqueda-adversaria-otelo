@@ -36,9 +36,9 @@ def mostrar_tablero(tablero):
 def poner_ficha(tablero, fila, columna, turno):
     valido, fichas_a_voltear = es_movimiento_valido(tablero, fila, columna, turno)
     if valido:
-        tablero[fila, columna] = turno
+        tablero[(fila, columna)] = turno
         for x,y in fichas_a_voltear:
-            tablero[x,y] = turno
+            tablero[(x,y)] = turno
     else:
         return 'Movimiento inválido'    
     
