@@ -8,19 +8,35 @@ class Nodo:
         self.turno = turno
         self.padre = padre
         self.hijos = []
-        self.acciones_posibles = otelo.posibles_movimientos(tablero, turno)
+        acciones = list(otelo.posibles_movimientos(tablero, turno).items())
+        random.shuffle(acciones)
+        self.acciones_posibles = dict(acciones)        
         self.acciones_hechas = []
         self.accion = accion
         self.r_acum = 0
         self.n_visitas = 0
 
 
-def mcts_uct(tablero, turno, iteraciones=100, ia_vs_ia = False):
+def imprime_arbol(nodo, profundidad=0):
+    indent = "  " * profundidad
+    print(f"{indent}Acción: {nodo.accion}, Turno: {nodo.turno}, "
+          f"Visitas: {nodo.n_visitas}, Recompensa: {nodo.r_acum}, "
+          f"Hijos: {len(nodo.hijos)}")
+    
+    for hijo in nodo.hijos:
+        imprime_arbol(hijo, profundidad + 1)
+
+
+def mcts_uct(tablero, turno, iteraciones=100):
     raiz = Nodo(tablero, turno)
     for i in range(0, iteraciones):
         nuevo_nodo = seleccion(raiz)
-        res_simulacion = simula(nuevo_nodo.estado, nuevo_nodo.turno, ia_vs_ia)
+        res_simulacion = simula(nuevo_nodo.estado, nuevo_nodo.turno)
         retropropaga(nuevo_nodo, res_simulacion)
+    
+    #print("Arbol")
+    #imprime_arbol(raiz)
+
     return mejor_sucesor_uct(raiz).accion
 
 def seleccion(nodo):
@@ -45,6 +61,7 @@ def expande(nodo):
             otelo.poner_ficha(nuevo_tablero, accion[0], accion[1], nodo.turno)
             nodo.acciones_hechas.append(accion)
             nuevo_nodo = Nodo(nuevo_tablero, padre= nodo, turno= 3-nodo.turno, accion=accion)
+            nuevo_nodo.r_acum += 1
             nodo.hijos.append(nuevo_nodo)
             return nuevo_nodo
 
@@ -71,37 +88,25 @@ def mejor_sucesor_uct(nodo):
 
     return nodo.hijos[mejor_hijo[0]]
 
-def simula(tablero, turno, ia_vs_ia):
+def simula(tablero, turno):
     nuevo_tablero = tablero.copy()
     nuevo_turno = turno
     while True:
         if not otelo.jugador_puede_mover(nuevo_tablero, 1) and not otelo.jugador_puede_mover(nuevo_tablero, 2):
             ganador, blancas, negras = otelo.ganador(nuevo_tablero)
             
-            if not ia_vs_ia:
-                if blancas == negras:
-                    return 0
-                elif ganador == 2:
-                    return 1
-                elif ganador == 1:
-                    return -1
-            else:
-                if blancas == negras:
-                    return 0
-                elif ganador == turno:
-                    return 1
-                elif ganador != turno:
-                    return -1
+            if blancas == negras:
+                return 0
+            elif ganador == turno:
+                return 1
+            elif ganador != turno:
+                return -1    
         
         if not otelo.jugador_puede_mover(nuevo_tablero, nuevo_turno):
             nuevo_turno = 3 - nuevo_turno
             continue
 
-        #movimiento = random.choice(list(otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)))
-
-        movimientos = list(otelo.posibles_movimientos(nuevo_tablero, nuevo_turno))
-        random.shuffle(movimientos)
-        movimiento = movimientos[0]
+        movimiento = random.choice(list(otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)))
 
         #movimientos = otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)
 
@@ -116,7 +121,7 @@ def maximiza_fichas_volteadas(movimientos):
 
 def retropropaga(nodo, res_simulacion):
     while nodo is not None:
-        nodo.r_acum += res_simulacion
+        nodo.r_acum = res_simulacion
         nodo.n_visitas += 1
         res_simulacion *= -1 
         nodo = nodo.padre
