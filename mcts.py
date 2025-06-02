@@ -61,7 +61,7 @@ def expande(nodo):
             otelo.poner_ficha(nuevo_tablero, accion[0], accion[1], nodo.turno)
             nodo.acciones_hechas.append(accion)
             nuevo_nodo = Nodo(nuevo_tablero, padre= nodo, turno= 3-nodo.turno, accion=accion)
-            nuevo_nodo.r_acum += 1
+            nuevo_nodo.n_visitas += 1
             nodo.hijos.append(nuevo_nodo)
             return nuevo_nodo
 
@@ -109,7 +109,6 @@ def simula(tablero, turno):
         movimiento = random.choice(list(otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)))
 
         #movimientos = otelo.posibles_movimientos(nuevo_tablero, nuevo_turno)
-
         #movimiento = maximiza_fichas_volteadas(movimientos)
 
         otelo.poner_ficha(nuevo_tablero, movimiento[0], movimiento[1], nuevo_turno)
@@ -121,7 +120,7 @@ def maximiza_fichas_volteadas(movimientos):
 
 def retropropaga(nodo, res_simulacion):
     while nodo is not None:
-        nodo.r_acum = res_simulacion
+        nodo.r_acum += res_simulacion
         nodo.n_visitas += 1
         res_simulacion *= -1 
         nodo = nodo.padre

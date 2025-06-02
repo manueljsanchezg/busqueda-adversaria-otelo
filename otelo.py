@@ -1,13 +1,3 @@
-EMPTY = 0
-BLACK = 1
-WHITE = 2
-
-TURN = 2
-
-DRAW = 0
-ACTIVE_WIN = 1
-ACTIVE_LOSE = -1
-
 #(3,3) -> negra
 #(3,4) -> blanca
 #(4,3) -> blanca
@@ -77,14 +67,16 @@ def posibles_movimientos(tablero, turno):
     posibles_movimientos = dict()
     for i in range(8):
         for j in range(8):
-            if tablero[(i, j)] == EMPTY and es_movimiento_valido(tablero, i, j, turno)[0]:
-                posibles_movimientos[(i,j)] = len(es_movimiento_valido(tablero, i, j, turno)[1])
+            if tablero[(i, j)] == 0:
+                valido, fichas_volteadas = es_movimiento_valido(tablero, i, j, turno)
+                if valido:
+                    posibles_movimientos[(i,j)] = len(fichas_volteadas)
     return posibles_movimientos
 
 def jugador_puede_mover(tablero, turno):
     for i in range(8):
         for j in range(8):
-            if tablero[(i, j)] == EMPTY and es_movimiento_valido(tablero, i, j, turno)[0]:
+            if tablero[(i, j)] == 0 and es_movimiento_valido(tablero, i, j, turno)[0]:
                 return True
     return False
 
