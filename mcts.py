@@ -17,25 +17,12 @@ class Nodo:
         self.n_visitas = 0
 
 
-def imprime_arbol(nodo, profundidad=0):
-    indent = "  " * profundidad
-    print(f"{indent}Acción: {nodo.accion}, Turno: {nodo.turno}, "
-          f"Visitas: {nodo.n_visitas}, Recompensa: {nodo.r_acum}, "
-          f"Hijos: {len(nodo.hijos)}")
-    
-    for hijo in nodo.hijos:
-        imprime_arbol(hijo, profundidad + 1)
-
-
 def mcts_uct(tablero, turno, iteraciones=100):
     raiz = Nodo(tablero, turno)
     for i in range(0, iteraciones):
         nuevo_nodo = seleccion(raiz)
         res_simulacion = simula(nuevo_nodo.estado, nuevo_nodo.turno)
         retropropaga(nuevo_nodo, res_simulacion)
-    
-    #print("Arbol")
-    #imprime_arbol(raiz)
 
     return mejor_sucesor_uct(raiz).accion
 

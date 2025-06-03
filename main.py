@@ -26,7 +26,7 @@ while True:
 
     if turno == 2:
         
-        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=2000)
+        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=5000)
         print(movimiento)
 
         otelo.poner_ficha(tablero, movimiento[0], movimiento[1], turno)
