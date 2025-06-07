@@ -54,7 +54,7 @@ red_otelo.fit(
     atributos_entrenamiento,
     objetivo_entrenamiento,
     batch_size=32,
-    epochs=500,
+    epochs=2000,
     verbose=1
 )
 
