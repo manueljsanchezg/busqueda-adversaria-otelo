@@ -3,7 +3,7 @@ import pandas as pd
 import otelo
 import mcts
 
-partidas = 150
+partidas = 20
 ganadas_negras = 0
 ganadas_blancas = 0
 
@@ -46,7 +46,7 @@ for i in tqdm(range(partidas)):
             turno = 3 - turno
             continue
         
-        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=5000)
+        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=15)
 
         otelo.poner_ficha(tablero, movimiento[0], movimiento[1], turno)
 
@@ -57,6 +57,6 @@ for i in tqdm(range(partidas)):
         
         turno = 3 - turno
 
-df_estados_partidas.to_csv("partidas_ia_vs_ia.csv", index=False)
+#df_estados_partidas.to_csv("partidas_ia_vs_ia.csv", index=False)
 print("Partidas ganadas por las negras: ", ganadas_negras)
 print("Partidas ganadas por las blancas: ", ganadas_blancas)

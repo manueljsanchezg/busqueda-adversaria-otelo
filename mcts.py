@@ -1,6 +1,10 @@
 import random
+import numpy as np
 import math
 import otelo
+from keras.models import load_model
+
+red_otelo = load_model("red_otelo.h5")
 
 class Nodo:
     def __init__(self, tablero, turno, padre=None, accion = None):
@@ -21,7 +25,7 @@ def mcts_uct(tablero, turno, iteraciones=100):
     raiz = Nodo(tablero, turno)
     for i in range(0, iteraciones):
         nuevo_nodo = seleccion(raiz)
-        res_simulacion = simula(nuevo_nodo.estado, nuevo_nodo.turno)
+        res_simulacion = simula_red(nuevo_nodo.estado, nuevo_nodo.turno)
         retropropaga(nuevo_nodo, res_simulacion)
 
     return mejor_sucesor_uct(raiz).accion
@@ -112,3 +116,16 @@ def retropropaga(nodo, res_simulacion):
         res_simulacion *= -1 
         nodo = nodo.padre
         
+
+def representar_tablero_para_red(tablero, turno):
+    entrada = []
+    for i in range(8):
+        for j in range(8):
+            entrada.append(float(tablero[(i, j)]))
+    entrada.append(float(turno))
+    return entrada
+
+def simula_red(tablero, turno):
+    entrada = representar_tablero_para_red(tablero, turno)
+    prediccion = red_otelo.predict(np.array([entrada]), verbose=0)[0][0]
+    return prediccion

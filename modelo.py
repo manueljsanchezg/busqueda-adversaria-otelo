@@ -59,3 +59,5 @@ red_otelo.fit(
 )
 
 red_otelo.evaluate(atributos_prueba, objetivo_prueba)
+
+red_otelo.save('red_otelo.h5')
