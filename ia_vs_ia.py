@@ -47,9 +47,9 @@ for i in tqdm(range(partidas)):
             continue
 
         if turno == 1:
-            movimiento = mcts.mcts_uct(tablero, turno, iteraciones=500)
+            movimiento = mcts.mcts_uct(tablero, turno, iteraciones=50)
         elif turno == 2:
-            movimiento = mcts.mcts_uct(tablero, turno, iteraciones=500, red_neuronal=False)
+            movimiento = mcts.mcts_uct(tablero, turno, iteraciones=10, red_neuronal=True)
 
         otelo.poner_ficha(tablero, movimiento[0], movimiento[1], turno)
 
