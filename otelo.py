@@ -17,7 +17,7 @@ def crear_tablero():
     return res
 
 def mostrar_tablero(tablero):
-    simbolos = {0: '.', 1: 'B', 2: 'W'}
+    simbolos = {0: '.', 1: 'N', 2: 'B'}
     print("  " + " ".join(str(j) for j in range(0, 8)))
     for i in range(0, 8):
         fila = [simbolos[tablero[(i, j)]] for j in range(0, 8)]
