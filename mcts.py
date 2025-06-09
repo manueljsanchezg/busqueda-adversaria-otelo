@@ -66,12 +66,9 @@ def mejor_sucesor_uct(nodo):
     uct_hijos = []
     posicion = 0
     for hijo in nodo.hijos:
-        if hijo.n_visitas == 0:
-            uct = float('inf')
-        else:
-            q_s = hijo.r_acum
-            n_s = hijo.n_visitas
-            uct = (q_s/n_s) + 2*c_p*math.sqrt(math.log(n_s0)/n_s)
+        q_s = hijo.r_acum
+        n_s = hijo.n_visitas
+        uct = (q_s/n_s) + 2*c_p*math.sqrt(math.log(n_s0)/n_s)
         
         uct_hijos.append((posicion, uct))
 
