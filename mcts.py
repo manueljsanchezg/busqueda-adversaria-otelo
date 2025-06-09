@@ -21,11 +21,14 @@ class Nodo:
         self.n_visitas = 0
 
 
-def mcts_uct(tablero, turno, iteraciones=100):
+def mcts_uct(tablero, turno, iteraciones=100, red_neuronal = False):
     raiz = Nodo(tablero, turno)
     for i in range(0, iteraciones):
         nuevo_nodo = seleccion(raiz)
-        res_simulacion = simula_red(nuevo_nodo.estado, nuevo_nodo.turno)
+        if red_neuronal == True:
+            res_simulacion = simula_red(nuevo_nodo.estado, nuevo_nodo.turno)
+        elif red_neuronal == False:
+            res_simulacion = simula(nuevo_nodo.estado, nuevo_nodo.turno)
         retropropaga(nuevo_nodo, res_simulacion)
 
     return mejor_sucesor_uct(raiz).accion

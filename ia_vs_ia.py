@@ -3,7 +3,7 @@ import pandas as pd
 import otelo
 import mcts
 
-partidas = 20
+partidas = 30
 ganadas_negras = 0
 ganadas_blancas = 0
 
@@ -45,8 +45,11 @@ for i in tqdm(range(partidas)):
         if not otelo.jugador_puede_mover(tablero, turno):
             turno = 3 - turno
             continue
-        
-        movimiento = mcts.mcts_uct(tablero, turno, iteraciones=15)
+
+        if turno == 1:
+            movimiento = mcts.mcts_uct(tablero, turno, iteraciones=100)
+        elif turno == 2:
+            movimiento = mcts.mcts_uct(tablero, turno, iteraciones=100, red_neuronal=True)
 
         otelo.poner_ficha(tablero, movimiento[0], movimiento[1], turno)
 
